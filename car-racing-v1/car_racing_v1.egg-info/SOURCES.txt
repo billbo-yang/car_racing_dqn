@@ -1,6 +1,0 @@
-setup.py
-car_racing_v1.egg-info/PKG-INFO
-car_racing_v1.egg-info/SOURCES.txt
-car_racing_v1.egg-info/dependency_links.txt
-car_racing_v1.egg-info/requires.txt
-car_racing_v1.egg-info/top_level.txt
