@@ -177,9 +177,9 @@ class CarRacing(gym.Env, EzPickle):
         return(R, phi)
 
     def _create_track(self):
-        mapCheckpoints = []
-        CHECKPOINTS = len(mapCheckpoints)
-        # CHECKPOINTS = 12
+        # mapCheckpoints = []
+        # CHECKPOINTS = len(mapCheckpoints)
+        CHECKPOINTS = 12
 
         # Create checkpoints
         checkpoints = []
