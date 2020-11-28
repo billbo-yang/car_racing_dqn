@@ -171,8 +171,15 @@ class CarRacing(gym.Env, EzPickle):
         self.road = []
         self.car.destroy()
 
+    def cartesianToPolar(x, y):
+        R = np.sqrt(x**2 + y**2)
+        phi = np.arctan2(y, x)
+        return(R, phi)
+
     def _create_track(self):
-        CHECKPOINTS = 12
+        mapCheckpoints = []
+        CHECKPOINTS = len(mapCheckpoints)
+        # CHECKPOINTS = 12
 
         # Create checkpoints
         checkpoints = []
@@ -190,9 +197,10 @@ class CarRacing(gym.Env, EzPickle):
                 rad = 1.5 * TRACK_RAD
 
             # # custom track
-            # alpha = (1 + 2*(c - 1)) * math.pi / CHECKPOINTS
-            # rad = TRACK_RAD
+            # rad,alpha = cartesianToPolar(mapCheckpoints(c)[0], mapCheckpoints(c)[1])
 
+            # # alpha = (1 + 2*(c - 1)) * math.pi / CHECKPOINTS
+            # # rad = TRACK_RAD
             # if c == CHECKPOINTS - 1:
             #     self.start_alpha = 0
 
