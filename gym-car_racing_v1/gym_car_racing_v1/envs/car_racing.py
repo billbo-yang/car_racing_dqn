@@ -171,7 +171,7 @@ class CarRacing(gym.Env, EzPickle):
         self.road = []
         self.car.destroy()
 
-    def cartesianToPolar(x, y):
+    def cartesianToPolar(self, x, y):
         R = np.sqrt(x**2 + y**2)
         phi = np.arctan2(y, x)
         return(R, phi)
