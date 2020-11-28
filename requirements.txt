@@ -1,0 +1,7 @@
+numpy
+wheel
+scikit-image
+tensorflow==1.15
+gym
+box2d
+box2d-py

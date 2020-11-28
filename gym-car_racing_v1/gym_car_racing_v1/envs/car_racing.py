@@ -85,6 +85,7 @@ class FrictionDetector(contactListener):
         self._contact(contact, False)
 
     def _contact(self, contact, begin):
+        # print("contact happening")
         tile = None
         obj = None
         u1 = contact.fixtureA.body.userData
@@ -143,6 +144,20 @@ class CarRacing(gym.Env, EzPickle):
         self.observation_space = spaces.Box(
             low=0, high=255, shape=(STATE_H, STATE_W, 3), dtype=np.uint8
         )
+    
+    # def _create_info(self):
+    #     info = np.zeros((sum(len(t) for t in self.tracks)),detype=[
+    #         ('count_left', 'int'),
+    #         ('count_right', 'int')
+    #     ])
+
+    # def _is_outside(self):
+    #     right = self.info['count_right'] > 0
+    #     left = self.info['count_left'] > 0
+    #     if(left|right).sum() == 0:
+    #         return True
+    #     else:
+    #         return False
 
     def seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)
@@ -382,8 +397,7 @@ class CarRacing(gym.Env, EzPickle):
         self.t += 1.0 / FPS
 
         self.state = self.render("state_pixels")
-
-        step_reward = 0
+dddd wasdfasdfasdfas asdf asd         step_reward = 0
         done = False
         if action is not None:  # First step without action, called from reset()
             self.reward -= 0.1
@@ -396,6 +410,13 @@ class CarRacing(gym.Env, EzPickle):
                 done = True
             x, y = self.car.hull.position
             if abs(x) > PLAYFIELD or abs(y) > PLAYFIELD:
+                done = True
+                step_reward = -100
+        
+        for w in self.car.wheels:
+            if not w.tiles:
+                # self.reward -= 1
+                # print("wheel off track")
                 done = True
                 step_reward = -100
 
