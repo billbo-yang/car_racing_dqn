@@ -172,23 +172,28 @@ class Car:
             return (omega)
         tire = 1 #(Harder)--> C1,C2,C3,C4,C5 <--(Softest)
         if tire == 1:
-            WHEEL_WEAR_COEFF = 0.000004 # Depending the speed should last about 190 laps
+            WHEEL_WEAR_COEFF = 0.000004 # Depending the speed should last about 190 laps of the oval
+            # 18 laps of an F1 track
             WHEEL_K= WHEEL_WEAR_COEFF * 1 # Starts degrading from the get go
             FRICTION_LIMIT = 1000000*SIZE*SIZE
         elif tire == 2:
-            WHEEL_WEAR_COEFF = 0.000006 # Should complete 170 laps
+            WHEEL_WEAR_COEFF = 0.000006 # Should complete 170 laps of the oval
+            # 20 laps of an F1 track
             WHEEL_K = WHEEL_WEAR_COEFF * 1
             FRICTION_LIMIT = 1200000 * SIZE * SIZE
         elif tire == 3:
-            WHEEL_WEAR_COEFF = 0.000007 # Should complete 150 laps
+            WHEEL_WEAR_COEFF = 0.000007 # Should complete 150 laps of the oval
+            # 26 laps of an F1 track
             WHEEL_K = WHEEL_WEAR_COEFF * 1
             FRICTION_LIMIT = 1400000 * SIZE * SIZE
         elif tire == 4:
-            WHEEL_WEAR_COEFF = 0.000009 # Should complete 120 laps
+            WHEEL_WEAR_COEFF = 0.000009 # Should complete 120 laps of the oval
+            # 30 laps of an F1 track
             WHEEL_K = WHEEL_WEAR_COEFF * 1  # Improves the amount of friction that is remaining
             FRICTION_LIMIT = 1600000 * SIZE * SIZE
         else:
-            WHEEL_WEAR_COEFF = 0.000010 # Should complete 100 laps
+            WHEEL_WEAR_COEFF = 0.000010 # Should complete 100 laps of the oval
+            # 35 laps of an F1 track
             WHEEL_K = WHEEL_WEAR_COEFF * 1
             FRICTION_LIMIT = 1800000 * SIZE * SIZE
         topthing = WHEEL_WEAR_COEFF * self.totalDistance - WHEEL_K
