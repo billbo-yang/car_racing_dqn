@@ -42,7 +42,7 @@ from Box2D.b2 import contactListener
 import gym
 from gym import spaces
 # from gym.envs.box2d.car_dynamics import Car
-from car_dynamics import Car
+from gym_car_racing_v1.envs.car_dynamics import Car
 from gym.utils import seeding, EzPickle
 
 import pyglet

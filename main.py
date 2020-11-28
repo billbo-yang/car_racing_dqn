@@ -9,8 +9,8 @@ import sys
 # SETTINGS
 
 # to start training from scratch:
-load_checkpoint = True
-checkpoint_path = "data/checkpoint02"
+load_checkpoint = False
+checkpoint_path = "data/checkpoint01"
 train_episodes = float("inf")
 save_freq_episodes = 50
 
