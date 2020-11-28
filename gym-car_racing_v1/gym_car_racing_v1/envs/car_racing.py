@@ -59,7 +59,7 @@ WINDOW_H = 800
 SCALE = 6.0  # Track scale
 TRACK_RAD = 900 / SCALE  # Track is heavily morphed circle with this radius
 PLAYFIELD = 2000 / SCALE  # Game over boundary
-FPS = 50  # Frames per second
+FPS = 50  # Frames per second, normally 50
 ZOOM = 2  # Camera zoom
 ZOOM_FOLLOW = True  # Set to False for fixed view (don't use zoom)
 
@@ -423,10 +423,10 @@ class CarRacing(gym.Env, EzPickle):
         
         for w in self.car.wheels:
             if not w.tiles:
-                # self.reward -= 1
+                self.reward -= 1
                 # print("wheel off track")
-                done = True
-                step_reward = -100
+                # done = True
+                # step_reward = -100
 
         return self.state, step_reward, done, {}
 
