@@ -397,7 +397,7 @@ class CarRacing(gym.Env, EzPickle):
         self.t += 1.0 / FPS
 
         self.state = self.render("state_pixels")
-dddd wasdfasdfasdfas asdf asd         step_reward = 0
+        step_reward = 0
         done = False
         if action is not None:  # First step without action, called from reset()
             self.reward -= 0.1
