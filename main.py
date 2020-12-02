@@ -9,17 +9,10 @@ import sys
 # SETTINGS
 
 # to start training from scratch:
-# training strategy 1
-# load_checkpoint = True
-# checkpoint_path = "data/checkpoint03"
-# train_episodes = float("inf")
-# save_freq_episodes = 50
-
-# training strategy 2
-load_checkpoint = False
-checkpoint_path = "data/checkpoint05"
+load_checkpoint = True
+checkpoint_path = "data/checkpoint03"
 train_episodes = float("inf")
-save_freq_episodes = 100
+save_freq_episodes = 50
 
 # To play from existing checkpoint without any training:
 # load_checkpoint = True
