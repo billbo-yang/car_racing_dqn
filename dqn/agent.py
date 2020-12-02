@@ -143,14 +143,19 @@ class DQN:
         # put the stack in the place of channel (last in tf)
         input_t = tf.transpose(input, [0, 2, 3, 1])
 
-        net = slim.conv2d(input_t, 8, (7, 7), data_format="NHWC",
-            activation_fn=tf.nn.relu, stride=3, weights_regularizer=wr, trainable=trainable)
+        net = slim.conv2d(input_t, 8, (4, 4), data_format="NHWC",
+            activation_fn=tf.nn.relu, stride=2, weights_regularizer=wr, trainable=trainable)
+        net = slim.conv2d(input_t, 16, (4, 4), data_format="NHWC",
+            activation_fn=tf.nn.relu, stride=2, weights_regularizer=wr, trainable=trainable)
         net = slim.max_pool2d(net, 2, 2)
-        net = slim.conv2d(net, 16, (3, 3), data_format="NHWC",
+        net = slim.conv2d(net, 32, (3, 3), data_format="NHWC",
+            activation_fn=tf.nn.relu, weights_regularizer=wr, trainable=trainable)
+        net = slim.max_pool2d(net, 2, 2)
+        net = slim.conv2d(net, 64, (3, 3), data_format="NHWC",
             activation_fn=tf.nn.relu, weights_regularizer=wr, trainable=trainable)
         net = slim.max_pool2d(net, 2, 2)
         net = slim.flatten(net)
-        net = slim.fully_connected(net, 256, activation_fn=tf.nn.relu,
+        net = slim.fully_connected(net, 512, activation_fn=tf.nn.relu,
             weights_regularizer=wr, trainable=trainable)
         q_state_action_values = slim.fully_connected(net, self.dim_actions,
             activation_fn=None, weights_regularizer=wr, trainable=trainable)
