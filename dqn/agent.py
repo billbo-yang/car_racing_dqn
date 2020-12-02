@@ -264,8 +264,9 @@ class CarRacingDQN(DQN):
 
     def __init__(self, max_negative_rewards=100, **kwargs):
         all_actions = np.array(
-            [k for k in it.product([-1, 0, 1], [1, 0], [0.2, 0])]
+            [k for k in it.product([-1, -.5, 0, .5, 1], [1, .5, 0], [.5, 0.2, 0])]
         )
+        # print("Action_Space: {}".format(all_actions))
         # car racing env gives wrong pictures without render
         kwargs["render"] = True
         super().__init__(
@@ -274,11 +275,12 @@ class CarRacingDQN(DQN):
             **kwargs
         )
 
-        self.gas_actions = np.array([a[1] == 1 and a[2] == 0 for a in all_actions])
-        self.break_actions = np.array([a[2] == 1 for a in all_actions])
+        self.gas_actions = np.array([a[1]*(a[2] == 0) for a in all_actions])
+        self.break_actions = np.array([a[2]*(a[1] == 0) for a in all_actions])
         self.n_gas_actions = self.gas_actions.sum()
         self.neg_reward_counter = 0
         self.max_neg_rewards = max_negative_rewards
+        # print("gas_actions: {}".format(self.gas_actions))
 
     @staticmethod
     def process_image(obs):
@@ -291,6 +293,7 @@ class CarRacingDQN(DQN):
         """
         action_weights = 14.0 * self.gas_actions + 1.0
         action_weights /= np.sum(action_weights)
+        # print("action_weights: {}".format(action_weights))
 
         return np.random.choice(self.dim_actions, p=action_weights)
 
