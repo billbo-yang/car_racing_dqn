@@ -199,7 +199,7 @@ class Car:
         topthing = WHEEL_WEAR_COEFF * self.totalDistance - WHEEL_K
         botthing = 1 + abs(WHEEL_WEAR_COEFF * self.totalDistance - (WHEEL_K + 1))
         self.tireWear = 1 - (.5 * (topthing/botthing + 1))
-
+        #print(self.totalDistance)
         for w in self.wheels:
             # Steer each wheel
             dir = np.sign(w.steer - w.joint.angle)

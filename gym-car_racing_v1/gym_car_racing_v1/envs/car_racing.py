@@ -3,31 +3,22 @@ Easiest continuous control task to learn from pixels, a top-down racing
 environment.
 Discrete control is reasonable in this environment as well, on/off
 discretization is fine.
-
 State consists of STATE_W x STATE_H pixels.
-
 The reward is -0.1 every frame and +1000/N for every track tile visited, where
 N is the total number of tiles visited in the track. For example, if you have
 finished in 732 frames, your reward is 1000 - 0.1*732 = 926.8 points.
-
 The game is solved when the agent consistently gets 900+ points. The generated
 track is random every episode.
-
 The episode finishes when all the tiles are visited. The car also can go
 outside of the PLAYFIELD -  that is far off the track, then it will get -100
 and die.
-
 Some indicators are shown at the bottom of the window along with the state RGB
 buffer. From left to right: the true speed, four ABS sensors, the steering
 wheel position and gyroscope.
-
 To play yourself (it's rather fast for humans), type:
-
 python gym/envs/box2d/car_racing.py
-
 Remember it's a powerful rear-wheel drive car -  don't press the accelerator
 and turn at the same time.
-
 Created by Oleg Klimov. Licensed on the same terms as the rest of OpenAI Gym.
 """
 import sys
@@ -58,15 +49,15 @@ WINDOW_W = 1000
 WINDOW_H = 800
 
 SCALE = 6.0  # Track scale
-TRACK_RAD = 900 / SCALE  # Track is heavily morphed circle with this radius
-PLAYFIELD = 2000 / SCALE  # Game over boundary
+TRACK_RAD = 4000 / SCALE  # Track is heavily morphed circle with this radius
+PLAYFIELD = 12000 / SCALE  # Game over boundary
 FPS = 50  # Frames per second, normally 50
-ZOOM = 2  # Camera zoom
+ZOOM = 0.1  # Camera zoom
 ZOOM_FOLLOW = True  # Set to False for fixed view (don't use zoom)
 
 
 TRACK_DETAIL_STEP = 40 / SCALE
-TRACK_TURN_RATE = .1 # how thicc the turn loops are
+TRACK_TURN_RATE = .06 # how thicc the turn loops are #0.1 smaller the number the bigger the turn radius
 TRACK_WIDTH = 40 / SCALE
 BORDER = 8 / SCALE
 BORDER_MIN_COUNT = 4
@@ -145,7 +136,7 @@ class CarRacing(gym.Env, EzPickle):
         self.observation_space = spaces.Box(
             low=0, high=255, shape=(STATE_H, STATE_W, 3), dtype=np.uint8
         )
-    
+
     # def _create_info(self):
     #     info = np.zeros((sum(len(t) for t in self.tracks)),detype=[
     #         ('count_left', 'int'),
@@ -180,21 +171,22 @@ class CarRacing(gym.Env, EzPickle):
     def _create_track(self):
         # mapCheckpoints = []
         # CHECKPOINTS = len(mapCheckpoints)
-        CHECKPOINTS = 12
+        CHECKPOINTS = 13
 
         # Create checkpoints
         checkpoints = []
         for c in range(CHECKPOINTS):
-            noise = self.np_random.uniform(0, 2 * math.pi * 1 / CHECKPOINTS)
-            alpha = 2 * math.pi * c / CHECKPOINTS + noise
-            rad = self.np_random.uniform(TRACK_RAD / 3, TRACK_RAD)
+            #noise = self.np_random.uniform(0, 2 * math.pi * 1 / CHECKPOINTS)
+            alpha = 2 * math.pi * c / CHECKPOINTS # + noise
+            rad = self.np_random.uniform(TRACK_RAD / 4, TRACK_RAD)
 
             if c == 0:
                 alpha = 0
                 rad = 1.5 * TRACK_RAD
+
             if c == CHECKPOINTS - 1:
                 alpha = 2 * math.pi * c / CHECKPOINTS
-                self.start_alpha = 2 * math.pi * (-0.5) / CHECKPOINTS
+                self.start_alpha = 0 # 2 * math.pi * (-0.5) / CHECKPOINTS
                 rad = 1.5 * TRACK_RAD
 
             # # custom track
@@ -207,6 +199,11 @@ class CarRacing(gym.Env, EzPickle):
 
             # print("Alpha: {} cos: {} sin: {}".format(alpha, rad * math.cos(alpha), rad * math.sin(alpha)))
             checkpoints.append((alpha, rad * math.cos(alpha), rad * math.sin(alpha)))
+        checkpoints = [(0, 1000.0, 0.0), (1.5707963267948966, 3.48439321062279e-14, 569.0445952332967), (3.141592653589793, -618.3419449235089, 7.572504836291241e-14), (4.71238898038469, -1.8369701987210297e-13, -1000.0)]
+        checkpoints = [(0, 300, 0), (1.0303768265243125, 299.99999999999994, 500.0), (1.4056476493802699, 99.99999999999996, 600.0), (1.5707963267948966, 3.6739403974420595e-14, 600.0), (1.7359450042095235, -100.0, 600.0), (2.1112158270654806, -299.9999999999999, 500.00000000000006), (3.141592653589793, -300.0, 3.6739403974420595e-14), (4.171969480114106, -300.0, -500.0), (4.547240302970063, -100.00000000000016, -600.0), (4.71238898038469, -1.1021821192326178e-13, -600.0), (4.877537657799317, 99.99999999999994, -600.0), (5.252808480655274, 299.99999999999983, -500.00000000000006)]
+        checkpoints = [(0, 350, 0), (1.0303768265243125, 299.99999999999994, 500.0), (1.4056476493802699, 75, 598.0), (1.5707963267948966, 3.6739403974420595e-14, 595.0), (1.7359450042095235, -75.0, 587.0), (2.0940746489268722, -300.00000000000006, 550.0), (3.141592653589793, -350.0, 3.9188697572715304e-14), (4.171969480114106, -300.0, -500.0), (4.547240302970063, -75, -598.0), (4.71238898038469, -1.1021821192326178e-13, -595.0), (4.877537657799317, 75, -587.0), (5.235667302516665, 300.0, -550.0)]
+        #checkpoints = [(0, 300, 0), (1.0303768265243125, 299.99999999999994, 500.0), (1.4056476493802699, 99.99999999999996, 600.0), (1.7359450042095235, -100.0, 600.0), (2.1112158270654806, -299.9999999999999, 500.00000000000006), (3.141592653589793, -300.0, 3.6739403974420595e-14), (4.171969480114106, -300.0, -500.0), (4.547240302970063, -100.00000000000016, -600.0), (4.877537657799317, 99.99999999999994, -600.0), (5.252808480655274, 299.99999999999983, -500.00000000000006)]
+        print(checkpoints)
         self.road = []
 
         # Go from one checkpoint to another to create track
@@ -230,7 +227,8 @@ class CarRacing(gym.Env, EzPickle):
 
                 while True:
                     dest_alpha, dest_x, dest_y = checkpoints[dest_i % len(checkpoints)]
-                    if alpha <= dest_alpha:
+                    #print(dest_alpha, dest_x, dest_y)
+                    if alpha < dest_alpha:
                         failed = False
                         break
                     dest_i += 1
@@ -251,6 +249,7 @@ class CarRacing(gym.Env, EzPickle):
             dest_dy = dest_y - y
             # destination vector projected on rad:
             proj = r1x * dest_dx + r1y * dest_dy
+            #print("Project:", proj)
             while beta - alpha > 1.5 * math.pi:
                 beta -= 2 * math.pi
             while beta - alpha < -1.5 * math.pi:
@@ -421,7 +420,7 @@ class CarRacing(gym.Env, EzPickle):
             if abs(x) > PLAYFIELD or abs(y) > PLAYFIELD:
                 done = True
                 step_reward = -100
-        
+
         for w in self.car.wheels:
             if not w.tiles:
                 self.reward -= 1
