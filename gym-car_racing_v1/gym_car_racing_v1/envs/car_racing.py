@@ -424,7 +424,7 @@ class CarRacing(gym.Env, EzPickle):
         
         for w in self.car.wheels:
             if not w.tiles:
-                self.reward -= 1
+                self.reward -= 2
                 # print("wheel off track")
                 # done = True
                 # step_reward = -100

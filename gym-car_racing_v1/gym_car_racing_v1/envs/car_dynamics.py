@@ -280,6 +280,8 @@ class Car:
             magnitude = math.sqrt(w.linearVelocity.x**2 + w.linearVelocity.y**2)
             self.totalDistance += dt * magnitude / 4
 
+            # print(magnitude)
+
         # print("Tire Wear: {}".format(self.tireWear))
         # print("Total Distance: {}".format(self.totalDistance))
 

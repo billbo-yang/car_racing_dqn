@@ -24,7 +24,7 @@ class DQN:
             batchsize=64,
             pic_size=(96, 96),
             num_frame_stack=4,
-            gamma=0.95,
+            gamma=0.97,
             frame_skip=1,
             train_freq=4,
             initial_epsilon=1.0,
