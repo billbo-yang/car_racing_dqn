@@ -49,7 +49,7 @@ WINDOW_W = 1000
 WINDOW_H = 800
 
 SCALE = 6.0  # Track scale
-TRACK_RAD = 900/ SCALE  # 900 for random 1400 FOR AB AND 4000 FOR NASCAR
+TRACK_RAD = 1400/ SCALE  # 900 for random 1400 FOR AB AND 4000 FOR NASCAR
 PLAYFIELD = 10000 / SCALE  # Game over boundary
 FPS = 50  # Frames per second, normally 50
 ZOOM = 2  # Camera zoom
@@ -169,42 +169,42 @@ class CarRacing(gym.Env, EzPickle):
         return(R, phi)
 
     def _create_track(self):
-        mapCheckpoints = []
-        # CHECKPOINTS = len(mapCheckpoints)
-        CHECKPOINTS = 12
+        # mapCheckpoints = []
+        # # CHECKPOINTS = len(mapCheckpoints)
+        # CHECKPOINTS = 12
+        
+        # # Create checkpoints
+        # checkpoints = []
+        # for c in range(CHECKPOINTS):
+        #     noise = self.np_random.uniform(0, 2 * math.pi * 1 / CHECKPOINTS)
+        #     alpha = 2 * math.pi * c / CHECKPOINTS # + noise
+        #     rad = self.np_random.uniform(TRACK_RAD / 4, TRACK_RAD)
 
-        # Create checkpoints
-        checkpoints = []
-        for c in range(CHECKPOINTS):
-            noise = self.np_random.uniform(0, 2 * math.pi * 1 / CHECKPOINTS)
-            alpha = 2 * math.pi * c / CHECKPOINTS # + noise
-            rad = self.np_random.uniform(TRACK_RAD / 4, TRACK_RAD)
+        #     if c == 0:
+        #         alpha = 0
+        #         rad = 1.5 * TRACK_RAD
 
-            if c == 0:
-                alpha = 0
-                rad = 1.5 * TRACK_RAD
+        #     if c == CHECKPOINTS - 1:
+        #         alpha = 2 * math.pi * c / CHECKPOINTS
+        #         2 * math.pi * (-0.5) / CHECKPOINTS
+        #         rad = 1.5 * TRACK_RAD
 
-            if c == CHECKPOINTS - 1:
-                alpha = 2 * math.pi * c / CHECKPOINTS
-                2 * math.pi * (-0.5) / CHECKPOINTS
-                rad = 1.5 * TRACK_RAD
+        #     # custom track
+        #     # rad,alpha = cartesianToPolar(mapCheckpoints(c)[0], mapCheckpoints(c)[1])
 
-            # custom track
-            # rad,alpha = cartesianToPolar(mapCheckpoints(c)[0], mapCheckpoints(c)[1])
+        #     # alpha = (1 + 2*(c - 1)) * math.pi / CHECKPOINTS
+        #     # rad = TRACK_RAD
+        #     if c == CHECKPOINTS - 1:
+        #         self.start_alpha = 0
 
-            # alpha = (1 + 2*(c - 1)) * math.pi / CHECKPOINTS
-            # rad = TRACK_RAD
-            if c == CHECKPOINTS - 1:
-                self.start_alpha = 0
-
-            print("Alpha: {} cos: {} sin: {}".format(alpha, rad * math.cos(alpha), rad * math.sin(alpha)))
-            checkpoints.append((alpha, rad * math.cos(alpha), rad * math.sin(alpha)))
+        #     # print("Alpha: {} cos: {} sin: {}".format(alpha, rad * math.cos(alpha), rad * math.sin(alpha)))
+        #     checkpoints.append((alpha, rad * math.cos(alpha), rad * math.sin(alpha)))
         self.start_alpha = 0
         #NASCAR TRACK COMPLETE
         # checkpoints = [(0, 350, 0), (1.0303768265243125, 299.99999999999994, 500.0), (1.4056476493802699, 75, 598.0), (1.5707963267948966, 3.6739403974420595e-14, 595.0), (1.7359450042095235, -75.0, 587.0), (2.0940746489268722, -300.00000000000006, 550.0), (3.141592653589793, -350.0, 3.9188697572715304e-14), (4.171969480114106, -300.0, -500.0), (4.547240302970063, -75, -598.0), (4.71238898038469, -1.1021821192326178e-13, -595.0), (4.877537657799317, 75, -587.0), (5.235667302516665, 300.0, -550.0)]
 
         #BAHRAIN TRACK COMPLETE
-        # checkpoints = [(0, 410.5, 640), (0.9975204735863425, 403.50000000000006, 625.0), (1.0608822145929842, 311.50000000000006, 557.0), (1.2532113939786518, 201.50000000000006, 613.0), (2.2298246300333844, -386.50000000000006, 499.0), (2.3077433315778384, -338.5, 373.00000000000006), (2.7296068146600834, -432.50000000000006, 188.99999999999997), (2.860241898026529, -432.5, 124.99999999999994), (3.08057949836508, -376.5, 23.000000000000046), (3.228330992265778, -402.5, -34.99999999999991), (3.7619964367477516, -306.50000000000006, -218.99999999999994), (5.2145408240866695, 335.4999999999997, -611.0000000000001), (5.302211234168128, 381.50000000000006, -570.0), (0, 410.5, 640)]
+        checkpoints = [(0, 410.5, 640), (0.9975204735863425, 403.50000000000006, 625.0), (1.0608822145929842, 311.50000000000006, 557.0), (1.2532113939786518, 201.50000000000006, 613.0), (2.2298246300333844, -386.50000000000006, 499.0), (2.3077433315778384, -338.5, 373.00000000000006), (2.7296068146600834, -432.50000000000006, 188.99999999999997), (2.860241898026529, -432.5, 124.99999999999994), (3.08057949836508, -376.5, 23.000000000000046), (3.228330992265778, -402.5, -34.99999999999991), (3.7619964367477516, -306.50000000000006, -218.99999999999994), (5.2145408240866695, 335.4999999999997, -611.0000000000001), (5.302211234168128, 381.50000000000006, -570.0), (0, 410.5, 640)]
 
 
         # print(checkpoints)
@@ -233,7 +233,7 @@ class CarRacing(gym.Env, EzPickle):
                     dest_alpha, dest_x, dest_y = checkpoints[dest_i % len(checkpoints)]
                     #print(dest_alpha, dest_x, dest_y)
                     if alpha < dest_alpha:
-                        print("IWAAS")
+                        # print("IWAAS")
                         failed = False
                         break
                     dest_i += 1
